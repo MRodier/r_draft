@@ -1,0 +1,52 @@
+---
+title: "My Website"
+---
+
+Hello, Website!
+
+For more information about simple R Markdown websites, please read the documentation at https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html.
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T)
+```
+
+Please also note that simple R Markdown sites are _not_ based on **blogdown**. They are probably good for websites with only a few Rmd documents. For larger-scale and more sophisticated websites (such as blogs), you may want to use **blogdown** instead: https://github.com/rstudio/blogdown.
+```{r import_table function definition }
+
+import_table <- function(path_table) {
+  stopifnot(
+    is.character(path_table),
+    substr(path_table, start = 1, stop = 13 ) == "Questionnaire",
+    file.exists(path_table)
+  )
+  annee_etude <- as.integer(substr(path_table, start = 15, stop = 18))
+  cat("Promotion traitée :", annee_etude, "-", annee_etude + 1, "\n")
+  table_df <- as.data.frame(read.table(path_table,
+                                       header = T,
+                                       sep = "\t",
+                                       quote = "\"",
+                                       dec = ".",
+                                       fill = T,
+                                       comment.char = ""))
+  if(ncol(table_df) != 26) cat("table_df ne possède pas 26 colonnes")
+  table_df <- table_df[-c(1:9)]
+  `colnames<-`(table_df, c("sexe_f",
+                           "sexe_h",
+                           "age",
+                           "situ_fami",
+                           "date_dip",
+                           "dip",
+                           "situ_prof",
+                           "temps_etud",
+                           "zone",
+                           "ville_metro",
+                           "ville_moy_plus",
+                           "ville_moy_moins",
+                           "ville_petite",
+                           "ville_village",
+                           "salaire",
+                           "foad",
+                           "but"))
+  
+}
+```
+
